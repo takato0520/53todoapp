@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom'
 const Task = ({ history }) => {
-    const moveToTaskDetail = (e) =>{
+    const moveToTaskDetail = (e) => {
         history.push("/TaskDetail");
     }
 
@@ -32,4 +33,4 @@ margin-top: 30px;
 margin-left: 20px;
 `
 
-export default Task
+export default withRouter(Task)
