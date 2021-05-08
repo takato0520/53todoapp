@@ -63,6 +63,7 @@ const TaskDetail = ({ history }) => {
                 <Button onClick={deleteText}>削除</Button>
                 <Button onClick={moveToRoom}>閉じる</Button>
             </ButtonWrap>
+    
         </>
     )
 }
