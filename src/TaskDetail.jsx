@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import firebase from './config/firebase'
 import 'firebase/firestore'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory, withRouter } from 'react-router-dom'
 
-const TaskDetail = ({ history }) => {
+const TaskDetail = () => {
+    const history = useHistory()
     const { id } = useParams()
     const [text, setText] = useState() //textareaの内容
     const [isChanged, setIsChanged] = useState(false) //textに変更があったかどうか判定する値
@@ -41,7 +42,7 @@ const TaskDetail = ({ history }) => {
                 saveTextData(e)
             }
         }
-        history.push("/")
+        history.push("/room")
     }
 
     return (

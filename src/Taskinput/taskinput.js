@@ -1,8 +1,3 @@
-
-
-
-
-
 import classes from './taskinput.module.css'
 import React, { useState } from 'react';
 
@@ -12,14 +7,14 @@ import { withRouter } from 'react-router-dom'
 
 const getKey = () => Math.random().toString(32).substring(2);
 
-function Taskinput({ history }) {
+function Taskinput({ history, getTasks }) {
 
-    const moveToTaskDetail = (e) => {
-        history.push("/taskDetail");
+    const moveToTaskDetail = (task) => {
+        history.push(`/taskDetail/${task.key}`);
     }
 
 
-    //タスクの追加
+    //todoの初期値
     const initialState = [
         {
             task: '',
@@ -27,33 +22,27 @@ function Taskinput({ history }) {
             dead: '',
             message: '',
             arr: '',
+            key: '',
             isCompleted: false
         },
 
     ]
 
+    //
     const [todos, setTodo] = useState(initialState);
 
-
+    //taskに関する変数を管理するState
     const [task, setTask] = useState('')
 
+    //変数taskに入力した値を追加する処理
     const handleNewTask = (event) => {
         setTask(event.target.value)
     }
 
-    //タスクにかかる時間について
+    //taskにかかる時間を管理するState
     const [time, setTime] = useState('1h')
 
-    /*  const options = [
- 
-     ] */
-
-
-
-
-
-    console.log(time)
-    //taskにかかる時間のselect
+    //taskにかかる時間を選択するのに必要な定数
     const dead_Time = [
         { value: "1", label: "1h", id: "1", },
         { value: "2", label: "2h", id: "2", },
@@ -64,26 +53,28 @@ function Taskinput({ history }) {
     ]
 
 
-
+    //timeに入力した値を代入する処理
     const Change = e => {
         setTime(e.target.value)
     }
 
-
+    //timeの数字部分だけを取り出して単位をmsに変換する
     let slicetime = time.slice(0, 1)
     let getSlicetime = slicetime * 3600000
-    //taskの締め切りについて
+
+    //taskにかかる時間を選択するコンポーネント
     const deadTask = dead_Time.map(deadtask => {
         return (
             <option key={deadtask.value}>{deadtask.id}h</option>
         )
     })
-    //締め切りの日にち
+    //締め切りの日にち管理する
     const [dead, setDead] = useState('')
     let today = new Date()
     let nowdate = today.getTime()
     let deadTime = Date.parse(new Date(dead))
 
+    //taskの優先順位を決める指標　締切までの時間-taskにかかる時間
     let differdate = deadTime - nowdate - getSlicetime
 
     /*    console.log(today) */
@@ -172,7 +163,7 @@ function Taskinput({ history }) {
                             <Item key={getKey()}>{todo.time}</Item>
                             <Item key={getKey()}>{todo.dead}</Item>
                             {/* <li key={getKey()}>締め切りまで{todo.message}</li> */}
-                            <Buttontask onClick={moveToTaskDetail}>詳細</Buttontask>
+                            <Buttontask onClick={e => moveToTaskDetail(todo.key)}>詳細</Buttontask>
                             <input
                                 className={classAdd ? classes.play : classes.none}
                                 type="button"
@@ -209,4 +200,3 @@ margin-left: 20px;
 `
 
 export default withRouter(Taskinput)
-

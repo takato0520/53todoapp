@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import firebase from './config/firebase'
 import 'firebase/firestore'
-import { withRouter, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 const CompletedTask = ({ completedTask }) => {
@@ -11,11 +11,13 @@ const CompletedTask = ({ completedTask }) => {
     console.log(firebase.firestore().collection('tasks').doc(completedTask.key))
     console.log(firebase.firestore().collection('tasks').doc('7v3fqv9S3OHmp93fLl4N'))
 
+    //詳細画面に遷移する処理
     const moveToDetail = () => {
         history.push(`/taskDetail/${completedTask.key}`)
 
     }
 
+    //メイン画面にtaskを再表示する処理
     const restoreTask = () => {
         const docRef = firebase.firestore().collection('tasks').doc(completedTask.key)
         docRef.update({
@@ -23,6 +25,7 @@ const CompletedTask = ({ completedTask }) => {
         })
     }
 
+    //履歴画面からtaskを削除する処理（DBから完全に消去する処理）
     const deleteTask = () => {
         firebase.firestore().collection('tasks').doc(completedTask.key)
             .delete()
@@ -56,4 +59,4 @@ background-color:yellow;
 width:100px;
 cursor:pointer;
 `
-export default withRouter(CompletedTask)
+export default CompletedTask
