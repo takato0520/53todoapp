@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Switch, Route, withRouter } from "react-router-dom"
-import Room from './Room'
 import Login from './Login'
 import SignUp from './SignUp'
 import TaskDetail from './TaskDetail'

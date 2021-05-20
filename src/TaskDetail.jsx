@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react'
 import firebase from './config/firebase'
 import 'firebase/firestore'
 import styled from 'styled-components'
-import { useParams, useHistory, withRouter } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 const TaskDetail = () => {
     const history = useHistory()
     const { id } = useParams()
-    const [text, setText] = useState() //textareaの内容
+    const [task, setTask] = useState() //textareaの内容
     const [isChanged, setIsChanged] = useState(false) //textに変更があったかどうか判定する値
 
     //前保存したテキストをtextareaに返す処理　*Roomを開いた時にロードした方が良いと思う
     useEffect(() => {
         firebase.firestore().collection('tasks').doc(id).get()
-            .then(text => { setText(text.data()) })
+            .then(task => { setTask(task.data()) })
     }, [])
 
 
@@ -21,7 +21,7 @@ const TaskDetail = () => {
     const saveTextData = (e) => {
         e.preventDefault()
         firebase.firestore().collection('tasks').doc(id).update({
-            detail: text
+            detail: task.detail
         })
         setIsChanged(false)
     }
@@ -29,7 +29,7 @@ const TaskDetail = () => {
     //テキストの削除をする関数
     const deleteText = (e) => {
         e.preventDefault()
-        setText("")
+        setTask({ ...task, detail: "" })
         setIsChanged(true)
     }
 
@@ -47,15 +47,15 @@ const TaskDetail = () => {
 
     return (
         <>
-            <h1>タスク名:{text?.name}</h1>
-            <div>期限:{text?.deadline}</div>
-            <div>かかる時間:{text?.requiredTime}</div>
+            <h1>タスク名:{task?.taskName}</h1>
+            <div>期限:{task?.deadline}</div>
+            <div>かかる時間:{task?.requiredTime}</div>
             <h2>タスクの詳細</h2>
             <Textarea
-                value={text?.detail}
+                value={task?.detail}
                 onChange={
                     e => {
-                        setText(e.target.value)
+                        setTask({ ...task, detail: e.target.value })
                         setIsChanged(true)
                     }
                 }
